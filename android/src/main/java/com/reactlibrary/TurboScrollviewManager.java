@@ -6,8 +6,9 @@ import androidx.appcompat.widget.AppCompatCheckBox;
 
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.views.scroll.ReactScrollViewManager;
 
-public class TurboScrollviewManager extends SimpleViewManager<View> {
+public class TurboScrollviewManager extends ReactScrollViewManager {
 
     public static final String REACT_CLASS = "TurboScrollview";
 
@@ -17,10 +18,7 @@ public class TurboScrollviewManager extends SimpleViewManager<View> {
     }
 
     @Override
-    public View createViewInstance(ThemedReactContext c) {
-        // TODO: Implement some actually useful functionality
-        AppCompatCheckBox cb = new AppCompatCheckBox(c);
-        cb.setChecked(true);
-        return cb;
+    public TurboScrollview createViewInstance(ThemedReactContext c) {
+        return new TurboScrollview(c);
     }
 }

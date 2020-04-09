@@ -18,6 +18,7 @@ public class TurboScrollviewPackage implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return Arrays.<ViewManager>asList(new TurboScrollviewManager());
+        return Arrays.<ViewManager>asList(new TurboScrollviewManager(), new TurboHorizontalScrollviewManager(),
+                new TurboHorizontalScrollContentViewManager());
     }
 }

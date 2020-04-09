@@ -13,14 +13,13 @@ import {
   Dimensions,
   findNodeHandle,
   Keyboard,
-  TextInputState,
+  TextInput,
   UIManager,
   NativeModules,
   requireNativeComponent,
 } from "react-native";
 
 const FrameRateLogger = require("react-native/Libraries/Interaction/FrameRateLogger");
-
 const invariant = require("invariant");
 const nullthrows = require("nullthrows");
 const performanceNow = require("fbjs/lib/performanceNow");
@@ -184,7 +183,12 @@ const ScrollResponderMixin = {
   scrollResponderHandleStartShouldSetResponder: function (
     e: PressEvent
   ): boolean {
-    const currentlyFocusedTextInput = TextInputState.currentlyFocusedField();
+    // Allow any event touch pass through if the default pan responder is disabled
+    if (this.props.disableScrollViewPanResponder === true) {
+      return false;
+    }
+
+    const currentlyFocusedTextInput = TextInput.State.currentlyFocusedField();
 
     if (
       this.props.keyboardShouldPersistTaps === "handled" &&
@@ -220,7 +224,7 @@ const ScrollResponderMixin = {
     // and a new touch starts with a non-textinput target (in which case the
     // first tap should be sent to the scroll view and dismiss the keyboard,
     // then the second tap goes to the actual interior view)
-    const currentlyFocusedTextInput = TextInputState.currentlyFocusedField();
+    const currentlyFocusedTextInput = TextInput.State.currentlyFocusedField();
     const { keyboardShouldPersistTaps } = this.props;
     const keyboardNeverPersistTaps =
       !keyboardShouldPersistTaps || keyboardShouldPersistTaps === "never";
@@ -228,7 +232,7 @@ const ScrollResponderMixin = {
       keyboardNeverPersistTaps &&
       currentlyFocusedTextInput != null &&
       e.target &&
-      !TextInputState.isTextInput(e.target)
+      !TextInput.State.isTextInput(e.target)
     ) {
       return true;
     }
@@ -296,7 +300,7 @@ const ScrollResponderMixin = {
 
     // By default scroll views will unfocus a textField
     // if another touch occurs outside of it
-    const currentlyFocusedTextInput = TextInputState.currentlyFocusedField();
+    const currentlyFocusedTextInput = TextInput.State.currentlyFocusedField();
     if (
       this.props.keyboardShouldPersistTaps !== true &&
       this.props.keyboardShouldPersistTaps !== "always" &&
@@ -307,7 +311,7 @@ const ScrollResponderMixin = {
     ) {
       this.props.onScrollResponderKeyboardDismissed &&
         this.props.onScrollResponderKeyboardDismissed(e);
-      TextInputState.blurTextInput(currentlyFocusedTextInput);
+      TextInput.State.blurTextInput(currentlyFocusedTextInput);
     }
   },
 

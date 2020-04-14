@@ -10,6 +10,7 @@ package com.reactlibrary;
 import android.annotation.TargetApi;
 import android.graphics.Color;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
@@ -98,6 +99,23 @@ public class TurboScrollviewManager extends ViewGroupManager<TurboScrollview>
         view.setSnapOffsets(offsets);
     }
 
+    @ReactProp(name = "snapPoints")
+    public void setSnapPoints(TurboScrollview view, @Nullable ReadableArray snapPoints) {
+        DisplayMetrics screenDisplayMetrics = DisplayMetricsHolder.getScreenDisplayMetrics();
+        List<Integer> points = new ArrayList<Integer>();
+        for (int i = 0; i < snapPoints.size(); i++) {
+            points.add((int) (snapPoints.getDouble(i) * screenDisplayMetrics.density));
+        }
+        Log.d("PROP POINTS", points.toString());
+        view.setSnapPoints(points);
+    }
+
+    @ReactProp(name = "startSnapFromY", defaultInt = 0)
+    public void setStartSnapFromY(TurboScrollview view, int startSnapFromY) {
+        DisplayMetrics screenDisplayMetrics = DisplayMetricsHolder.getScreenDisplayMetrics();
+        view.setStartSnapFromY((int) (startSnapFromY * screenDisplayMetrics.density));
+    }
+
     @ReactProp(name = "snapToStart")
     public void setSnapToStart(TurboScrollview view, boolean snapToStart) {
         view.setSnapToStart(snapToStart);
@@ -147,7 +165,7 @@ public class TurboScrollviewManager extends ViewGroupManager<TurboScrollview>
     /**
      * When set, fills the rest of the scrollview with a color to avoid setting a
      * background and creating unnecessary overdraw.
-     * 
+     *
      * @param view
      * @param color
      */

@@ -19,7 +19,9 @@ public class TurboScrollviewCommandHelper extends ReactScrollViewCommandHelper {
 
     public interface ScrollCommandHandler<T> {
         void scrollTo(T scrollView, ScrollToCommandData data);
+
         void scrollToEnd(T scrollView, ScrollToEndCommandData data);
+
         void flashScrollIndicators(T scrollView);
     }
 
@@ -47,21 +49,13 @@ public class TurboScrollviewCommandHelper extends ReactScrollViewCommandHelper {
         }
     }
 
-    public static Map<String,Integer> getCommandsMap() {
-        return MapBuilder.of(
-            "scrollTo",
-            COMMAND_SCROLL_TO,
-            "scrollToEnd",
-            COMMAND_SCROLL_TO_END,
-            "flashScrollIndicators",
-            COMMAND_FLASH_SCROLL_INDICATORS);
+    public static Map<String, Integer> getCommandsMap() {
+        return MapBuilder.of("scrollTo", COMMAND_SCROLL_TO, "scrollToEnd", COMMAND_SCROLL_TO_END,
+                "flashScrollIndicators", COMMAND_FLASH_SCROLL_INDICATORS);
     }
 
-    public static <T> void receiveCommand(
-        ScrollCommandHandler<T> viewManager,
-        T scrollView,
-        int commandType,
-        @Nullable ReadableArray args) {
+    public static <T> void receiveCommand(ScrollCommandHandler<T> viewManager, T scrollView, int commandType,
+            @Nullable ReadableArray args) {
         Assertions.assertNotNull(viewManager);
         Assertions.assertNotNull(scrollView);
         Assertions.assertNotNull(args);
@@ -86,10 +80,8 @@ public class TurboScrollviewCommandHelper extends ReactScrollViewCommandHelper {
                 return;
 
             default:
-                throw new IllegalArgumentException(String.format(
-                    "Unsupported command %d received by %s.",
-                    commandType,
-                    viewManager.getClass().getSimpleName()));
+                throw new IllegalArgumentException(String.format("Unsupported command %d received by %s.", commandType,
+                        viewManager.getClass().getSimpleName()));
         }
     }
 }
